@@ -1,0 +1,8 @@
+services:
+  scala-env:
+    image: mcr.microsoft.com/devcontainers/java:17
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: /bin/bash
+    tty: true

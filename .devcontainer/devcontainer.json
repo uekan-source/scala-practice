@@ -1,0 +1,16 @@
+{
+  "name": "Scala 3 Development",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "scala-env",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "vscode",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "scalameta.metals",
+        "scala-lang.scala"
+      ]
+    }
+  },
+  "postCreateCommand": "bash -c 'source /usr/local/sdkman/bin/sdkman-init.sh && sdk install sbt'"
+}
