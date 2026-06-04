@@ -1,10 +1,9 @@
 package education.section2
 
-object Answer2:
+object Answer3:
   def main(args: Array[String]): Unit =
-    println(optionQuestion2(Some(""))）
-    println(optionQuestion2(Some("a")))
-    println(optionQuestion2(None))
+    println(optionQuestion3(Some(5))
+    println(optionQuestion3(None))
 
-  def optionQuestion2(str: Option[String]): Boolean =
-      str.isDefined
+  def optionQuestion3(num: Option[Int]): Option[Int]) =
+    num.map(i => i + 3)
