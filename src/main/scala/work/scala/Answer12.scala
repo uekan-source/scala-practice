@@ -19,7 +19,7 @@ object Answer12:
       case Pending, Shipped, Cancelled
 
   def main(args: Array[String]): Unit =
-    
+
     val customers: Seq[Customer] =
       Seq(
         Customer(Customer.Id(1), "Alice"),
@@ -34,7 +34,7 @@ object Answer12:
         Order(Order.Id(102), Customer.Id(2), 1500,   Order.Status.Pending),
         Order(Order.Id(103), Customer.Id(1), 2800, Order.Status.Cancelled),
         Order(Order.Id(104), Customer.Id(3), 5000,   Order.Status.Shipped),
-        Order(Order.Id(105), Customer.Id(1), 1200,   Order.Status.Pending), 
+        Order(Order.Id(105), Customer.Id(1), 1200,   Order.Status.Pending),
         Order(Order.Id(106), Customer.Id(3),  700, Order.Status.Cancelled)
       )
 
@@ -44,7 +44,7 @@ object Answer12:
    // println(customersById(customers))
    // println(findCustomerName(byId, Customer.Id(3)))
    // println(totalByCustomer(orders))
-      println(neverOrdered(customers, orders))
+    println(neverOrdered(customers, orders))
 
   def customersById(customers: Seq[Customer]): Map[Customer.Id, Customer] =
     customers.map(customer => customer.id -> customer).toMap
