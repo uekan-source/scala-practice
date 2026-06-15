@@ -5,29 +5,29 @@ object Answer18:
    * トレーナークラス
    */
   case class Trainer(
-    name:    String,
-    pokemon: Sep[Pokemon]
+    name:    String,      // トレーナー名
+    pokemon: Seq[Pokemon] // 手持ちポケモン 
   )
 
   /**
    * ポケモンクラス
    */
   case class Pokemon(
-    name:     String,
-    yomigana: String,
-    hpMax:    Int,
-    hp:       Int,
-    skill:    Seq[Skill]
+    name:     String,    // ポケモン名
+    yomigana: String,    // 読み仮名
+    hpMax:    Int,       // 初期HP
+    hp:       Int,       // 現在のHP
+    skill:    Seq[Skill] // 技名
   )
 
   /**
    * スキルクラス
    */
   case class Skill(
-    name:     String,
-    yomigana: String,
-    category: String,
-    damage:   Int
+    name:     String, // 技名
+    yomigana: String, // 読み仮名
+    category: String, // 種別
+    damage:   Int     // 威力
   )
 
   /**
@@ -35,33 +35,102 @@ object Answer18:
    *
    * 表のポケモンの組合せも定義
    */
-  def main(args: Array[String]): Unit =
+  def main(args: Array[String]): Unit = 
 
     /**
      * サトシの手持ちポケモンと技
      */
-    val trainers Seq[Trainer] =
-      Seq(Trainer
-        ("サトシ",
-          Seq(Pokemon
-            ("ピカチュウ", "ぴかちゅう" ,35 ,35,
-              Seq(Skill
-                ("電光石火", "でんこうせっか","攻撃",40),
-              Seq(Skill
-                ("自己再生", "じこさいせい", "回復", 50),
-          Seq(Pokemon
-            ("リザードン", "りざーどん", 78, 78,
-              Seq(Skill
-              ("火炎放射",  "かえんほうしゃ", "攻撃", 90),
-              Seq(Skill
-              ("破壊光線", "はかいこうせん","攻撃",90),
-          Seq(Pokemon
-            ("カビゴン", "かびごん", 160, 160,
-            Seq(Skill
-              ("地震", "じしん", "攻撃", 100),
-            Seq(Skill
-              ("回復", "かいふく", "回復", 60),
+    val trainers: Seq[Trainer] =
+      Seq(
+        Trainer("サトシ",
+          Seq(
+            Pokemon("ピカチュウ", "ぴかちゅう" ,35 ,35,
+              Seq(
+                Skill("電光石火", "でんこうせっか","攻撃",40),
+                Skill("自己再生", "じこさいせい", "回復", 50)
+              )
+            ),
+            Pokemon("リザードン", "りざーどん", 78, 78,
+              Seq(
+                Skill("火炎放射",  "かえんほうしゃ", "攻撃", 90),
+                Skill("破壊光線", "はかいこうせん","攻撃",90)
+              )
+            ),
+            Pokemon("カビゴン", "かびごん", 160, 160,
+              Seq(
+                Skill("地震", "じしん", "攻撃", 100),
+                Skill("回復", "かいふく", "回復", 60)
+              )
+            )
           )
+        ),
+
+      /**
+       * カスミの手持ちポケモン
+       */
+        Trainer("カスミ",
+          Seq(
+            Pokemon("ゼニガメ", "ぜにがめ" ,44 ,44,
+              Seq(
+                Skill("水鉄砲", "みずでっぽう","攻撃",45),
+                Skill("甲羅休め", "こうらやすめ", "回復", 40)
+              )
+            ),
+            Pokemon("フシギバナ", "ふしぎばな", 80, 80,
+              Seq(
+                Skill("草結び", "くさむすび", "攻撃", 65),
+                Skill("光合成", "こうごうせい","回復",70)
+              )
+            )
+          )
+        ),
+
+      /**
+       * タケシの手持ちポケモン
+       */
+        Trainer("タケシ",
+          Seq(
+            Pokemon("ゼニガメ", "ぜにがめ" ,44 ,44,
+              Seq(
+                Skill("水鉄砲", "みずでっぽう","攻撃",45),
+                Skill("甲羅休め", "こうらやすめ", "回復", 40)
+              )
+            ),
+            Pokemon("イワーク", "いわーく", 55, 55,
+              Seq(
+                Skill("岩石封じ", "がんせきふうじ", "攻撃", 60),
+                Skill("地割れ", "じわれ", "攻撃", 120)
+              )
+            ),
+            Pokemon("イシツブテ", "いしつぶて", 40, 40,
+              Seq(
+                Skill("落石", "らくせき", "攻撃", 50),
+                Skill("治療", "ちりょう", "回復", 30)
+              )
+            )
+          )
+        )
+      )
+
+    /**
+     * 問2の結果出力
+     */
+    println(showAllSkills(trainers))
+
+  /**
+   * 問2 全スキルを集めて、よみがな順に重複なく表示する
+   */
+  def showAllSkills(trainers: Seq[Trainer]): Unit =
+    trainers
+      .flatMap(t => t.pokemon)
+      .flatMap(p => p.skill)
+      .sortBy(y => y.yomigana)
+      .distinct
+      .foreach(s => s.name)
+
+
+
+
 
 
 
