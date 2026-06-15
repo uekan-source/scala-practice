@@ -115,7 +115,7 @@ object Answer18:
     /**
      * 問2の結果出力
      */
-    println(showAllSkills(trainers))
+    showAllSkills(trainers)
 
   /**
    * 問2 全スキルを集めて、よみがな順に重複なく表示する
@@ -126,7 +126,7 @@ object Answer18:
       .flatMap(p => p.skill)
       .sortBy(y => y.yomigana)
       .distinct
-      .foreach(s => s.name)
+      .foreach(s => println(s.name))
 
 
 
