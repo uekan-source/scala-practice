@@ -5,8 +5,8 @@ object Answer18:
    * トレーナークラス
    */
   case class Trainer(
-    name:    String,      // トレーナー名
-    pokemon: Seq[Pokemon] // 手持ちポケモン 
+    name:     String,      // トレーナー名
+    pokemons: Seq[Pokemon] // 手持ちポケモン 
   )
 
   /**
@@ -17,7 +17,7 @@ object Answer18:
     yomigana: String,    // 読み仮名
     hpMax:    Int,       // 初期HP
     hp:       Int,       // 現在のHP
-    skill:    Seq[Skill] // 技名
+    skills:   Seq[Skill] // 技名
   )
 
   /**
@@ -115,18 +115,46 @@ object Answer18:
     /**
      * 問2の結果出力
      */
-    showAllSkills(trainers)
+    //showAllSkills(trainers)
+    showHierarchy(trainers)
 
   /**
    * 問2 全スキルを集めて、よみがな順に重複なく表示する
    */
   def showAllSkills(trainers: Seq[Trainer]): Unit =
     trainers
-      .flatMap(t => t.pokemon)
-      .flatMap(p => p.skill)
+      .flatMap(t => t.pokemons)
+      .flatMap(p => p.skills)
       .sortBy(y => y.yomigana)
       .distinct
       .foreach(s => println(s.name))
+
+  /**
+   * 問3 一覧を並べて、階層表示する
+   */
+  def showHierarchy(trainers: Seq[Trainer]): Unit =
+    trainers
+      .sortBy(trainer => trainer.name)
+      .foreach(trainer => println(trainer.name)
+        trainer
+          .map(pokemon => pokemon.pokemons)
+          .sortBy(pokemon => pokemon.yomigana)
+          .foreach(pokemon => println(s"  ${pokemon.name} (HP${pokemon.hp})")
+            pokemon
+              .map(skill => skill.skills)
+              .sortBy(skill => -skill.damage)
+              .foreach(skill => println(s"    ${skill.name} (${skill.category} / 威力${skill.damage})")
+              )
+          )
+      )
+
+
+
+
+
+
+
+
 
 
 
