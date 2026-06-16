@@ -135,17 +135,22 @@ object Answer18:
   def showHierarchy(trainers: Seq[Trainer]): Unit =
     trainers
       .sortBy(trainer => trainer.name)
-      .foreach(trainer => println(trainer.name)
+      .foreach(trainer => 
+        println(trainer.name)
+
         trainer
-          .pokemons
-          .sortBy(pokemon => pokemon.yomigana)
-          .foreach(pokemon => println(s"  ${pokemon.name} (HP${pokemon.hp})")
-            pokemon
-              .skills
-              .sortBy(skill => -skill.damage)
-              .foreach(skill => println(s"    ${skill.name} (${skill.category} / 威力${skill.damage})")
-              )
+        .pokemons
+        .sortBy(pokemon => pokemon.yomigana)
+        .foreach(pokemon =>
+          println(s"  ${pokemon.name} (HP${pokemon.hp})")
+
+          pokemon
+          .skills
+          .sortBy(skill => -skill.damage)
+          .foreach(skill =>
+            println(s"    ${skill.name} (${skill.category} / 威力${skill.damage})")
           )
+        )
       )
 
 
