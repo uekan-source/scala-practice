@@ -137,11 +137,11 @@ object Answer18:
       .sortBy(trainer => trainer.name)
       .foreach(trainer => println(trainer.name)
         trainer
-          .map(pokemon => pokemon.pokemons)
+          .pokemons
           .sortBy(pokemon => pokemon.yomigana)
           .foreach(pokemon => println(s"  ${pokemon.name} (HP${pokemon.hp})")
             pokemon
-              .map(skill => skill.skills)
+              .skills
               .sortBy(skill => -skill.damage)
               .foreach(skill => println(s"    ${skill.name} (${skill.category} / 威力${skill.damage})")
               )
