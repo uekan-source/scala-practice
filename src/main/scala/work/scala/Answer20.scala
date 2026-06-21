@@ -12,22 +12,26 @@ object Answer20:
 
   def findUserId(name: String): Future[Int] =
     Future {
-      Thread.sleep(1000); id
+      Thread.sleep(1000) 
       val ids: Map[String, Int] = Map(
         "ueno" -> 1,
         "sato" -> 2,
         "yano" -> 3
       )
+      ids.getOrElse(name, -1)
     }
 
   def findProfile(userId: Int): Future[String] =
     Future {
-      Thread.sleep(1000); s"${profile_1}さんの特徴は${profile_2}"
+      Thread.sleep(1000) 
       val profiles: Map[Int, Seq[String]] =Map(
         1 -> Seq("uenokanta", "笑顔が取り柄"),
         2 -> Seq("satoyudai", "男気がある"),
         3 -> Seq("yanokosuke", "とにかく優しい")
       )
+      profiles.get(userId) match
+      case Some(Seq(name, feature)) => s"$nameさんの特徴は$feature"
+      case _                        => "存在しないユーザーです"
     }
 
   def findNotice(): Future[String] =
