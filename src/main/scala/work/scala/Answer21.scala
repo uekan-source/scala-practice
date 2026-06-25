@@ -38,9 +38,25 @@ object Answer21:
         .map(item =>item.id -> item)
         .toMap
 
-    println(changeStringToInt("3"))
-    println(changeStringToInt("abc"))
-    println(changeStringToInt("0"))
+    val orders: Seq[(Int, String)] =
+      Seq(
+        (1,  "3"),
+        (1,  "abc"),
+        (99, "1"),
+        (2,  "1")
+      )
+
+    //println(changeStringToInt("3"))
+    //println(changeStringToInt("abc"))
+    //println(changeStringToInt("0"))
+    //println(calicurateAmount(1,  "3",   toItemsMap))
+    //println(calicurateAmount(1,  "abc", toItemsMap))
+    //println(calicurateAmount(99, "1",   toItemsMap))
+    //println(calicurateAmount(2,  "1",   toItemsMap))
+    println(resultComent(calicurateAmount(1,   "3",     toItemsMap)))
+    println(resultComent(calicurateAmount(1,   "abc",   toItemsMap)))
+    println(resultComent(calicurateAmount(99,  "1",     toItemsMap)))
+    println(resultComent(calicurateAmount(2,   "1",     toItemsMap)))
 
   /**
    * 問2 数量を数値に変換する
@@ -60,4 +76,57 @@ object Answer21:
       .get(id)
       .toRight(ValidationError.NotFoundId(id))
 
+  /**
+   * 問4 在庫を確認し、注文全体をforで合成する
+   */
+  def confirmStock(item: Item, qty: Int): Either[ValidationError, Unit] =
+    if item.stock >= qty then
+      Right(())
+    else
+      Left(ValidationError.OutOfStock(qty))
+
+  def calicurateAmount(
+    id: Int,
+    userOrder: String,
+    toItemsMap: Map[Int, Item]
+  ): Either[ValidationError, Int] =
+    for {
+      a <- changeStringToInt(userOrder)
+      b <- itemFind(id, toItemsMap)
+      c <- confirmStock(b, a)
+    } yield b.price * a
+
+  /**
+   * 問5 結果を読みやすいメッセージにする
+   */
+  def resultComent(results: Either[ValidationError, Int]): String =
+    results match
+      // 数量エラー
+      case Left(ValidationError.IncorrectQuantity(value: String)) =>
+        s"入力された数量${value}が正しくありません"
+
+      // 商品が見つからない
+      case Left(ValidationError.NotFoundId(id)) =>
+        s"商品のid: ${id}が見つからない"
+
+      // 在庫が見つからない
+      case Left(ValidationError.OutOfStock(stock)) =>
+        s"在庫が${stock}個足りない"
+
+      // 正解
+      case Right(amt) =>
+        s"合計 ${amt} 円"
+
+  /**
+   * 複数注文をまとめて処理する
+   */
+  def processOrders(
+    orders: Seq[(Int, String)],
+    toItemsMap: Map[Int, Item]
+  ): (Int, Seq[ValidationError]) =
+    val (error, amounts) =
+      orders.partitionMap{
+        case (id, qty) => calicurateAmount(id, qty, toItemsMap)
+      }
+    (amounts.sum, error)
 
