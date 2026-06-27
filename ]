@@ -59,7 +59,7 @@ object Answer23:
     println(findByBookId(booksById(books), Book.Id(3)))
     println(findByBookId(booksById(books), Book.Id(99)))
     println(totalLoan(loans))
-    println(findNotLoanedBooks(books, loans))
+    println()
 
   def booksById(books: Seq[Book]): Map[Book.Id, Book] =
     books
@@ -73,21 +73,32 @@ object Answer23:
 
   def totalLoan(loans:Seq[Loan]): Map[Book.Id, Int] =
     loans
-      .groupMap(loan => loan.bookId)(loan => loan.id)
+      .gruopMap(loan => loan.bookId)(loan => loan)
       .view.mapValues(t => t.size)
       .toMap
 
-  def findNotLoanedBooks(books: Seq[Book], loans: Seq[Loan]): Set[String] =
     
-   val setLoans =
-     loans
-       .map(_.bookId)
-       .toSet
 
-   books
-     .filterNot(book => setLoans.contains(book.id))
-     .map(_.title)
-     .toSet
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
