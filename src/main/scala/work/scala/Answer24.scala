@@ -35,6 +35,7 @@ object Answer24:
     println(confirmBalance(Account(2, "佐藤",     0),  100))
     println(Await.result(serchAccount(accountsById,  1), Duration.Inf))
     println(Await.result(serchAccount(accountsById, 99), Duration.Inf))
+    println(Await.result(processWithdraw(1, 3, 3000, accountsById), Duration.Inf))
 
 
 
@@ -59,8 +60,18 @@ object Answer24:
     targetId: Int,
     amount:   Int,
     accountsById :Map[Int, Account]
-  ):Future[Either[WithdrawError, Int, Int] =
-
+  ):Future[Either[WithdrawError, (Int, Int)]] =
+    serchAccount(accountsById, sourceId)
+      .flatMap:
+        case Left(e)        => Future.successful(Left(e))
+        case Right(account) => confirmBalance(account, amount)
+          match {
+            case Left(e)        => Future.successful(Left(e))
+            case Right(balance) => serchAccount(accountsById, targetId)
+              .map:
+                case Left(e)        => Left(e)
+                case Right(account) => Right(balance, account.balance + amount)  
+          }
 
 
 
