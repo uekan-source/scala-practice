@@ -112,20 +112,26 @@ object Answer18:
         )
       )
 
-    /**
-     * 問2の結果出力
-     */
-    //showAllSkills(trainers)
-    showHierarchy(trainers)
+    showAllSkills(trainers) // 問2
+    showHierarchy(trainers) // 問3
+    val MATH_RANDOM = new scala.util.Random(256) //問4
+    println("ダメージ前")
+    println("ダメージ後")
+    println("変化なし")
+    val satoshi = trainers(0)
+    val kasumi  = trainers(1)
+    println(swapPokemon(satoshi, kasumi, 0, 0))
+
+
 
   /**
    * 問2 全スキルを集めて、よみがな順に重複なく表示する
    */
   def showAllSkills(trainers: Seq[Trainer]): Unit =
     trainers
-      .flatMap(t => t.pokemons)
-      .flatMap(p => p.skills)
-      .sortBy(y => y.yomigana)
+      .flatMap(_.pokemons)
+      .flatMap(_.skills)
+      .sortBy(_.yomigana)
       .distinct
       .foreach(s => println(s.name))
 
@@ -134,28 +140,42 @@ object Answer18:
    */
   def showHierarchy(trainers: Seq[Trainer]): Unit =
     trainers
-      .sortBy(trainer => trainer.name)
-      .foreach(trainer => 
-        println(trainer.name)
+      .sortBy(_.name)
+      .foreach(t => 
+        println(t.name)
 
-        trainer
-        .pokemons
-        .sortBy(pokemon => pokemon.yomigana)
-        .foreach(pokemon =>
-          println(s"  ${pokemon.name} (HP${pokemon.hp})")
+        t.pokemons
+          .sortBy(_.yomigana)
+          .foreach(p =>
+            println(s"  ${p.name} (HP${p.hp})")
 
-          pokemon
-          .skills
-          .sortBy(skill => -skill.damage)
-          .foreach(skill =>
-            println(s"    ${skill.name} (${skill.category} / 威力${skill.damage})")
+            p.skills
+              .sortBy(-_.damage)
+              .foreach(s =>
+                println(s"    ${s.name} (${s.category} / 威力${s.damage})")
+              )
           )
-        )
-      )
+      )  
 
+  /**
+   * 問4 ランダムに1体だけHPを減らす
+   */
+  //def randomDamage(trainer: Trainer): Trainer =
 
+  /**
+   * 問5 ポケモンを交換する
+   */
+  def swapPokemon(a: Trainer, b: Trainer, indexA: Int, indexB: Int): (Trainer, Trainer) =
 
+    val newPokemonA =
+      a.pokemons
+        .updated(indexA, b.pokemons(indexB))
 
+    val newPokemonB =
+      b.pokemons
+        .updated(indexB, a.pokemons(indexA))
+
+    (Trainer(a.name, newPokemonA),Trainer(b.name, newPokemonB))
 
 
 
