@@ -72,15 +72,35 @@ object Answer30:
         Order(Order.Id(106), Customer.Id(3),  700, Order.Status.Cancelled)
       )
 
+    println(customersById(customers))
+    val byId = customersById(customers)
+    println(findCustomerName(byId, Customer.Id(3)))
+    println(findCustomerName(byId, Customer.Id(99)))
+    println(totalByCustomer(orders))
+    println(neverOrdered(customers, orders))
+
   def customersById(customers: Seq[Customer]): Map[Customer.Id, Customer] =
     customers
-      .groupBy(_.id)
+      .map(customer => customer.id -> customer)
+      .toMap
 
   def findCustomerName(byId: Map[Customer.Id, Customer], id: Customer.Id): Option[String] =
     byId
       .get(id)
       .map(_.name)
 
+  def totalByCustomer(orders: Seq[Order]): Map[Customer.Id, Int] =
+    orders
+      .filter(_.status != Order.Status.Cancelled)
+      .groupMap(_.customerId)(_.amount)
+      .view.mapValues(_.sum)
+      .toMap
+
+  def neverOrdered(customers: Seq[Customer], orders: Seq[Order]): Set[String] =
+    customers
+      .filterNot(customer => (orders.map(_.customerId).toSet).contains(customer.id))
+      .map(_.name)
+      .toSet
 
 
 
