@@ -1,6 +1,6 @@
 package work.scala
 
-object Answer31:
+object Answer32:
 
   /**
    * 部署表クラス
@@ -76,7 +76,7 @@ object Answer31:
     //println(departments)
     //println(employees)
     //println(employeesById(employees))
-    println(averageSalarybyId(employees))
+    println(averageSalaryById(employees))
     //println(neverEmployeeDepartment(departments, employees))
 
   /**
@@ -91,7 +91,7 @@ object Answer31:
    */
   def averageSalaryById(employees: Seq[Employee]): Map[Department.Id, Int] =
     employees
-      .groupMap(_.id)(_.salary)
-      .view.mapValues(t => t.salary.sum / t.size)
+      .groupMap(_.departmentId)(_.salary)
+      .view.mapValues(t => t.sum / t.size)
       .toMap
 
