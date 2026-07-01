@@ -13,5 +13,5 @@ object Answer34:
    */
   def eitherQuestion1(n: Int): Either[String, Int] =
     n >= 0 match
-      case n => Right(n)
-      case _ => Left("負の数です")
+      case true  => Right(n)
+      case false => Left("負の数です")
