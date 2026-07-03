@@ -6,7 +6,7 @@ object Answer18:
    */
   case class Trainer(
     name:     String,      // トレーナー名
-    pokemons: Seq[Pokemon] // 手持ちポケモン 
+    pokemons: Seq[Pokemon] // 手持ちポケモン
   )
 
   /**
@@ -29,13 +29,14 @@ object Answer18:
     category: String, // 種別
     damage:   Int     // 威力
   )
+  val MATH_RANDOM = new scala.util.Random(256)
 
   /**
    * メインメソッド
    *
    * 表のポケモンの組合せも定義
    */
-  def main(args: Array[String]): Unit = 
+  def main(args: Array[String]): Unit =
 
     /**
      * サトシの手持ちポケモンと技
@@ -112,15 +113,18 @@ object Answer18:
         )
       )
 
-    showAllSkills(trainers) // 問2
-    showHierarchy(trainers) // 問3
-    val MATH_RANDOM = new scala.util.Random(256) //問4
-    println("ダメージ前")
-    println("ダメージ後")
-    println("変化なし")
     val satoshi = trainers(0)
     val kasumi  = trainers(1)
-    println(swapPokemon(satoshi, kasumi, 0, 0))
+    val damagedSatoshi = randomDamage(satoshi)
+    showAllSkills(trainers) // 問2
+    showHierarchy(trainers) // 問3
+    println("ダメージ前")   // 問4
+    showHierarchy(Seq(satoshi))
+    println("ダメージ後")
+    showHierarchy(Seq(damagedSatoshi))
+    println("変化なし")
+    showHierarchy(Seq(satoshi))
+    println(swapPokemon(satoshi, kasumi, 0, 0))  // 問5
 
 
 
@@ -141,7 +145,7 @@ object Answer18:
   def showHierarchy(trainers: Seq[Trainer]): Unit =
     trainers
       .sortBy(_.name)
-      .foreach(t => 
+      .foreach(t =>
         println(t.name)
 
         t.pokemons
@@ -155,12 +159,34 @@ object Answer18:
                 println(s"    ${s.name} (${s.category} / 威力${s.damage})")
               )
           )
-      )  
+      )
 
   /**
    * 問4 ランダムに1体だけHPを減らす
    */
-  //def randomDamage(trainer: Trainer): Trainer =
+  def randomDamage(trainer: Trainer): Trainer =
+
+    val currentPokemons = trainer.pokemons
+
+    val targetIndex = MATH_RANDOM.nextInt(currentPokemons.size)
+
+    val damage = MATH_RANDOM.nextInt(100)
+
+    val targetPokemon = currentPokemons(targetIndex)
+
+    val hpNew = math.max(0, targetPokemon.hp - damage)
+
+    val damagedPokemon = Pokemon(
+      targetPokemon.name,
+      targetPokemon.yomigana,
+      targetPokemon.hpMax,
+      hpNew,
+      targetPokemon.skills
+    )
+
+    val newPokemons = currentPokemons.updated(targetIndex, damagedPokemon)
+
+    Trainer(trainer.name, newPokemons)
 
   /**
    * 問5 ポケモンを交換する
