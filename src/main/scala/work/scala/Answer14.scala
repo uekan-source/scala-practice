@@ -1,6 +1,6 @@
 package work.scala
 
-// 種類（suit: ♠ ♥ ♦ ♣ などのマーク）と数字（number）を持つ 1 枚のカード
+// 種類（suit: ♠ ♥ ♦ ♣ などのマーク）、数字（number）を持つ 1 枚のカード
 case class Card(suit: String, number: Int)
 
 object Answer14:
